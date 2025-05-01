@@ -942,3 +942,24 @@ h1, h2, h3, h4, h5,
 
 .footer-section {
   padding-top: 12rem !important; }
+
+
+
+  
+  .nav-tabs {
+    text-align: right;
+    gap: 1rem;
+    margin-bottom: 0px; 
+    justify-content: center;
+  }
+  
+ 
+  
+  .tab-content {
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  
+  
+  
