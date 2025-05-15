@@ -14,6 +14,7 @@ var server = http.createServer(function (req, res) {
     let contentType = "text/html";
 
     if (extname === ".css") contentType = "text/css";
+    if (extname === ".xml") contentType = "text/xml";
 
     fs.readFile(filePath, function(err, htmlData){
         if(err){
