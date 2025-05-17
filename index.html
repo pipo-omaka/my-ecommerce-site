@@ -1504,13 +1504,13 @@
 
             <div role="tabpanel" class="tab-pane" id="Register">
               Register
-              <form method="post" data-aos="fade">
+              <form id="register-form" method="post" data-aos="fade">
                 <div class="form-group row">
                   <div class="col-md-6 mb-3 mb-lg-0">
-                    <input type="text" class="form-control" placeholder="First name">
+                    <input type="text" id="firstName" class="form-control" placeholder="First name" required>
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Last name">
+                    <input type="text" id="lastName" class="form-control" placeholder="Last name" required>
                   </div>
                 </div>
       
@@ -1531,12 +1531,12 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-md-12">
-                    <input type="email" class="form-control" placeholder="Email">
+                    <input type="email" id="emailres" class="form-control" placeholder="Email" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-md-12">
-                    <input type="password" class="form-control" placeholder="password">
+                    <input type="password" id="password" class="form-control" placeholder="password" required>
                   </div>
                 </div>
                 
@@ -1544,7 +1544,7 @@
                 <div class="form-group row">
                   <div class="col-md-6">
       
-                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Submit">
+                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Register">
                   </div>
                 </div>
       
@@ -1553,29 +1553,23 @@
 
             <div role="tabpanel" class="tab-pane" id="Sign-in">
               Sign-in
-              <form method="post" data-aos="fade">
+              <form id="login-form" method="post" data-aos="fade">
               <div class="form-group row">
                   <div class="col-md-12">
-                    <input type="text" class="form-control" placeholder="Email">
+                    <input type="email" id="login-email" class="form-control" placeholder="Email" required>
                   </div>
                 </div>
       
                 <div class="form-group row">
                   <div class="col-md-12">
-                    <input type="email" class="form-control" placeholder="Password">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-md-12">
-                    <textarea class="form-control" id="" cols="30" rows="10"
-                      placeholder="Write your message here."></textarea>
+                    <input type="password" id="login-password" class="form-control" placeholder="Password" required>
                   </div>
                 </div>
       
                 <div class="form-group row">
                   <div class="col-md-6">
       
-                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Submit">
+                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Login">
                   </div>
                 </div>
       
@@ -1673,11 +1667,7 @@
 
   <script>
 
-  
-
-
-
-  //loadDoc("url-2", myFunction2);
+    //loadDoc("url-2", myFunction2);
 
   function loadDoc(url, cFunction) {
     const xhttp = new XMLHttpRequest();
@@ -1837,7 +1827,7 @@
       console.log(result.message)
     })
 
-      // Load Occupation Categories when page is ready
+    // Load Occupation Categories when page is ready
   document.addEventListener("DOMContentLoaded", () => {
     loadOccupationCategories();
     
@@ -1849,7 +1839,7 @@
     const categorySelect = document.getElementById("category");
 
     try {
-      const response = await fetch("./backend/data/occupation-cat.json");
+      const response = await fetch("./JSON/occupation-cat.json");
 
       const categories = await response.json();
 
@@ -1874,7 +1864,7 @@
     if (!selectedCategory) return;
 
     try {
-      const response = await fetch(`./backend/data/${selectedCategory}.json`);
+      const response = await fetch(`./JSON/${selectedCategory}.json`);
       const occupations = await response.json();
 
       occupations.forEach(occupation => {
@@ -1888,7 +1878,80 @@
     }
   }
 
+  document.getElementById("register-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+  const email = document.getElementById("emailres").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const category = document.getElementById("category").value;
+  const occupation = document.getElementById("occupation").value;
+
+  if (!firstName || !lastName || !email || !password || !category || !occupation) {
+    alert("Please fill in all fields.");
+    console.log({
+  firstName,
+  lastName,
+  email,
+  password,
+  category,
+  occupation
+});
+
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5001/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password,
+        category,
+        occupation
+      })
+    });
+
+    const result = await response.json();
+    alert(result.message || "Register successfully");
+  } catch (error) {
+    console.error("Registration failed:", error);
+    alert("Something went wrong.");
+  }
+});
+
+  document.getElementById("login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+
+    if (!email || !password) {
+      return; // Do nothing if empty
+    }
+
+    try {
+      const response = await fetch("http://localhost:5001/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+      alert(result.message);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  });
+  
   </script>
 
 </body>

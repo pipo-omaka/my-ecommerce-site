@@ -1,0 +1,26 @@
+[
+  {
+    "firstName": "a",
+    "lastName": "b",
+    "email": "namio@gmail.com",
+    "password": "1234",
+    "category": "healthcare",
+    "occupation": "Health professional"
+  },
+  {
+    "firstName": "pog",
+    "lastName": "ba",
+    "email": "pogba@gmail.com",
+    "password": "5678",
+    "category": "healthcare",
+    "occupation": "Nurse"
+  },
+  {
+    "firstName": "kevin",
+    "lastName": "De Bruyne",
+    "email": "Debruyne@gmail.com",
+    "password": "123123",
+    "category": "healthcare",
+    "occupation": "Dentist"
+  }
+]
